@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("Get all stickers");
-});
+const getStickers = require('../controllers/stickers')
+
+router.get("/", getStickers);
 
 router.post("/", (req, res) => {
   res.send("Add sticker");
