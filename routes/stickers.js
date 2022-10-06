@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "./uploads/" });
 
-const getStickers = require('../controllers/stickers')
+const { getStickers, addSticker } = require("../controllers/stickers");
 
 router.get("/", getStickers);
 
-router.post("/", (req, res) => {
-  res.send("Add sticker");
-});
+router.post("/", upload.single("file"), addSticker);
 
 router.get("/:id", (req, res) => {
   res.send("Get one sticker");

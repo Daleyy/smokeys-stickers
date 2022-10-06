@@ -6,6 +6,7 @@ const connectToDB = require("./db/connect");
 const stickers = require('./routes/stickers')
 
 app.use('/api/v1/stickers', stickers)
+app.use(express.static('public'))
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
