@@ -42,11 +42,20 @@ const addSticker = async (req, res) => {
 
 const getSticker = async (req, res) => {
   try {
-    const sticker = await Sticker.findOne({ id:req.params.id });
+    const sticker = await Sticker.findOne({ _id: req.params.id });
     res.status(200).json(sticker);
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { getStickers, addSticker, getSticker };
+const deleteSticker = async (req, res) => {
+  try {
+    const sticker = await Sticker.findOneAndDelete({ _id: req.params.id });
+    res.status(200).json(sticker);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getStickers, addSticker, getSticker, deleteSticker };

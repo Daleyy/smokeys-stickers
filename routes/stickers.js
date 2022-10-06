@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const upload = multer({ dest: "./uploads/" });
 
-const { getStickers, addSticker, getSticker } = require("../controllers/stickers");
+const { getStickers, addSticker, getSticker, deleteSticker } = require("../controllers/stickers");
 
 router.get("/", getStickers);
 
@@ -15,8 +15,6 @@ router.patch("/:id", (req, res) => {
   res.send("Update sticker");
 });
 
-router.delete("/:id", (req, res) => {
-  res.send("Delete sticker");
-});
+router.delete("/:id", deleteSticker);
 
 module.exports = router;
