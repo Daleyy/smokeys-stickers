@@ -40,4 +40,13 @@ const addSticker = async (req, res) => {
   }
 };
 
-module.exports = { getStickers, addSticker };
+const getSticker = async (req, res) => {
+  try {
+    const sticker = await Sticker.findOne({ id:req.params.id });
+    res.status(200).json(sticker);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getStickers, addSticker, getSticker };
