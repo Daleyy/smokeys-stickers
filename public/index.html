@@ -1,4 +1,17 @@
+Upload file:
 <form method="post" enctype="multipart/form-data" action="/api/v1/stickers">
+    <input type="file" name="file">
+    <input type="submit" value="Submit">
+</form>
+
+Remove background:
+<form method="post" enctype="multipart/form-data" action="/api/v1/stickers/removebg">
+    <input type="file" name="file">
+    <input type="submit" value="Submit">
+</form>
+
+Resize image:
+<form method="post" enctype="multipart/form-data" action=" ">
     <input type="file" name="file">
     <input type="submit" value="Submit">
 </form>
