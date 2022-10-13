@@ -3,11 +3,19 @@ const router = express.Router();
 const multer = require("multer");
 const upload = multer({ dest: "./uploads/" });
 
-const { getStickers, addSticker, getSticker, deleteSticker } = require("../controllers/stickers");
+const {
+  getStickers,
+  addSticker,
+  getSticker,
+  deleteSticker,
+  removeBackground
+} = require("../controllers/stickers");
 
 router.get("/", getStickers);
 
 router.post("/", upload.single("file"), addSticker);
+
+router.post("/removebg", upload.single("file"), removeBackground);
 
 router.get("/:id", getSticker);
 
