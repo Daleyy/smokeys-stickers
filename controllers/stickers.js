@@ -69,7 +69,6 @@ const removeBackground = async (req, res) => {
         `Result width x height: ${removedBg.resultWidth} x ${removedBg.resultHeight}, type: ${removedBg.detectedType}`
       );
       console.log(removedBg.base64img.substring(0, 40) + "..");
-      console.log(removedBg.detectedType)
     })
     .then(() => {
       console.log("resizing image");

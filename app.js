@@ -8,10 +8,6 @@ const stickers = require("./routes/stickers");
 app.use("/api/v1/stickers", stickers);
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 const start = async () => {
   try {
     await connectToDB(process.env.MONGO_URI).then(() =>
@@ -26,3 +22,9 @@ const start = async () => {
 };
 
 start();
+
+// To use the app without a database uncomment the lines below and comment out the start function and call above.
+
+// app.listen(PORT, () => {
+//   console.log(`Server started on ${PORT}...`);
+// });
