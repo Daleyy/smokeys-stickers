@@ -1,9 +1,8 @@
 require("dotenv").config();
 const Sticker = require("../models/Sticker");
-const multer = require("multer");
-const path = require("path");
 const fs = require("fs");
 const removeBG = require("remove.bg");
+const sharp = require("sharp");
 
 const getStickers = async (req, res) => {
   try {
@@ -44,28 +43,46 @@ const addSticker = async (req, res) => {
 
 const removeBackground = async (req, res) => {
   const imageFile = req.file.path;
-  const outputFile = req.file.destination + req.file.filename + ".png"
+  const outputFile = req.file.destination + req.file.filename + ".png";
   const apiKey = process.env.REMOVEBG_API_KEY;
-  console.log(req.file)
-  console.log(imageFile)
   if (!apiKey) {
     throw new Error("No apikey found");
   }
 
-  removeBG.removeBackgroundFromImageFile({
+  removeBG
+    .removeBackgroundFromImageFile({
       path: imageFile,
       apiKey: apiKey,
       size: "regular",
       position: "center",
       outputFile,
     })
-    .then((removeBgResult) => {
-      res.json({ success: "well done" });
-      fs.unlink(req.file.path, () => {console.log('Removing original uploaded file...')})
+    .then((removedBg) => {
+      fs.unlink(req.file.path, () => {
+        console.log("Removing original uploaded file...");
+      });
       console.log(`File saved to ${outputFile}`);
-      console.log(`${removeBgResult.creditsCharged} credit(s) charged for this image`);
-      console.log(`Result width x height: ${removeBgResult.resultWidth} x ${removeBgResult.resultHeight}, type: ${removeBgResult.detectedType}`);
-      console.log(removeBgResult.base64img.substring(0, 40) + "..");
+      console.log(
+        `${removedBg.creditsCharged} credit(s) charged for this image`
+      );
+      console.log(
+        `Result width x height: ${removedBg.resultWidth} x ${removedBg.resultHeight}, type: ${removedBg.detectedType}`
+      );
+      console.log(removedBg.base64img.substring(0, 40) + "..");
+      console.log(removedBg.detectedType)
+    })
+    .then(() => {
+      console.log("resizing image");
+      sharp(outputFile)
+        .resize({
+          width: 512,
+          height: 512,
+          fit: "contain",
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+        })
+        .trim()
+        .toFile(`./uploads/${req.file.filename + Date.now()}-resized.png`);
+      res.status(201).send("Background removed and image resized");
     })
     .catch((error) => {
       console.log(error);
