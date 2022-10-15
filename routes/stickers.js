@@ -8,21 +8,19 @@ const {
   addSticker,
   getSticker,
   deleteSticker,
-  removeBackground
+  removeBackground,
 } = require("../controllers/stickers");
 
-router.get("/", getStickers);
+router.route("/").get(getStickers).post(upload.single("file"), addSticker);
 
-router.post("/", upload.single("file"), addSticker);
+router
+  .route("/:id")
+  .get(getSticker)
+  .patch((req, res) => {
+    res.send("Update sticker");
+  })
+  .delete(deleteSticker);
 
 router.post("/removebg", upload.single("file"), removeBackground);
-
-router.get("/:id", getSticker);
-
-router.patch("/:id", (req, res) => {
-  res.send("Update sticker");
-});
-
-router.delete("/:id", deleteSticker);
 
 module.exports = router;
