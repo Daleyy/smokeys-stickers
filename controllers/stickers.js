@@ -2,6 +2,7 @@ require("dotenv").config();
 const Sticker = require("../models/Sticker");
 const fs = require("fs");
 const removeBG = require("remove.bg");
+const { removeBackgroundFromImageFile } = removeBG;
 const sharp = require("sharp");
 
 const getStickers = async (req, res) => {
@@ -30,10 +31,7 @@ const addSticker = async (req, res) => {
     } else {
       fs.unlink(filePath, (err) => {
         if (err) console.log(err);
-        res
-          .status(403)
-          .contentType("text/plain")
-          .end("Only .png or .jpeg files are allowed!");
+        res.status(403).send("Only .png or .jpeg files are allowed!");
       });
     }
   } catch (error) {
@@ -49,14 +47,13 @@ const removeBackground = async (req, res) => {
     throw new Error("No apikey found");
   }
 
-  removeBG
-    .removeBackgroundFromImageFile({
-      path: imageFile,
-      apiKey: apiKey,
-      size: "regular",
-      position: "center",
-      outputFile,
-    })
+  removeBackgroundFromImageFile({
+    path: imageFile,
+    apiKey: apiKey,
+    size: "regular",
+    position: "center",
+    outputFile,
+  })
     .then((removedBg) => {
       fs.unlink(req.file.path, () => {
         console.log("Removing original uploaded file...");
@@ -69,9 +66,7 @@ const removeBackground = async (req, res) => {
         `Result width x height: ${removedBg.resultWidth} x ${removedBg.resultHeight}, type: ${removedBg.detectedType}`
       );
       console.log(removedBg.base64img.substring(0, 40) + "..");
-    })
-    .then(() => {
-      console.log("resizing image");
+      console.log("Resizing image...");
       sharp(outputFile)
         .resize({
           width: 512,
@@ -81,13 +76,18 @@ const removeBackground = async (req, res) => {
         })
         .trim()
         .toFile(`./uploads/${req.file.filename + Date.now()}-resized.png`);
-      res.status(201).send("Background removed and image resized");
+      res
+        .status(201)
+        .send(
+          `Background removed and image resized. Image saved ./uploads/${
+            req.file.filename + Date.now()
+          }-resized.png`
+        );
     })
     .catch((error) => {
       console.log(error);
+      res.status(403).send("Only .png or .jpeg files are allowed!");
     });
-
-  return null;
 };
 
 const getSticker = async (req, res) => {
