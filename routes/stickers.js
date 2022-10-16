@@ -17,7 +17,7 @@ router
   .route("/:id")
   .get(getSticker)
   .patch((req, res) => {
-    res.send("Update sticker");
+    res.status(200).send("Updated sticker"); // TODO: Add update sticker
   })
   .delete(deleteSticker);
 

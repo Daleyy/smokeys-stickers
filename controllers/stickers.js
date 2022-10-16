@@ -36,6 +36,7 @@ const addSticker = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    return res.status(503).send("No database connection found.");
   }
 };
 
@@ -55,16 +56,10 @@ const removeBackground = async (req, res) => {
     outputFile,
   })
     .then((removedBg) => {
-      fs.unlink(req.file.path, () => {
-        console.log("Removing original uploaded file...");
-      });
+      fs.unlink(req.file.path, () => {console.log("Removing original uploaded file...");});
       console.log(`File saved to ${outputFile}`);
-      console.log(
-        `${removedBg.creditsCharged} credit(s) charged for this image`
-      );
-      console.log(
-        `Result width x height: ${removedBg.resultWidth} x ${removedBg.resultHeight}, type: ${removedBg.detectedType}`
-      );
+      console.log(`${removedBg.creditsCharged} credit(s) charged for this image`);
+      console.log(`Result width x height: ${removedBg.resultWidth} x ${removedBg.resultHeight}, type: ${removedBg.detectedType}`);
       console.log(removedBg.base64img.substring(0, 40) + "..");
       console.log("Resizing image...");
       sharp(outputFile)
@@ -78,11 +73,7 @@ const removeBackground = async (req, res) => {
         .toFile(`./uploads/${req.file.filename + Date.now()}-resized.png`);
       res
         .status(201)
-        .send(
-          `Background removed and image resized. Image saved ./uploads/${
-            req.file.filename + Date.now()
-          }-resized.png`
-        );
+        .send(`Background removed and image resized. Image saved ./uploads/${req.file.filename + Date.now()}-resized.png`);
     })
     .catch((error) => {
       console.log(error);
