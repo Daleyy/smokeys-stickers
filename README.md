@@ -16,7 +16,6 @@ Initially it was going to be a simple REST api to to learn how to POST an image 
 After I did that, I got an idea to try integrating a third party API [https://remove.bg/](https://www.remove.bg/) and a third party module [Sharp](https://sharp.pixelplumbing.com/) to make creating a sticker for Telegram easy as I was creating a sticker pack of our cat Smokey (picture below)!
 
 *Why?* Telegram requires a square image and often the stickers look better with  removed background.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started 🏃‍♂️
@@ -54,7 +53,6 @@ Install the latest version of npm.
    node app.js
    ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage 👍
@@ -67,8 +65,6 @@ Example result of background removal and resizing:
 
 <img src="https://i.imgur.com/wb8xads.jpg" height="250" alt="original image"/>  
 <img src="https://i.imgur.com/0YuqQcJ.png" height="250" alt="result image"/>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap 🛣
@@ -85,5 +81,3 @@ https://documenter.getpostman.com/view/20869369/2s847BVGr1
 ## Sticker Pack 😸
 
 Get the sticker pack here: https://t.me/addstickers/SmokeysStickers
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
