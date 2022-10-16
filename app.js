@@ -9,22 +9,23 @@ app.use("/api/v1/stickers", stickers);
 app.use(express.static("public"));
 
 const start = async () => {
-  try {
-    await connectToDB(process.env.MONGO_URI).then(() =>
-      console.log("Connected to Database...")
-    );
+  if (process.env.MONGO_URI) {
+    try {
+      await connectToDB(process.env.MONGO_URI).then(() =>
+        console.log("Connected to Database...")
+      );
+      app.listen(PORT, () => {
+        console.log(`Server started on ${PORT}...`);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
     app.listen(PORT, () => {
+      console.log("No database connection found...");
       console.log(`Server started on ${PORT}...`);
     });
-  } catch (error) {
-    console.log(error);
   }
 };
 
 start();
-
-// To use the app without a database uncomment the lines below and comment out the start function and call above.
-
-// app.listen(PORT, () => {
-//   console.log(`Server started on ${PORT}...`);
-// });
